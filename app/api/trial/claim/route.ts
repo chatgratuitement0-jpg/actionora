@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-export async function POST(request: Request) {\n  const body = await request.json().catch(() => ({})) as { confirm?: boolean };\n  if (body.confirm !== true) return NextResponse.json({ claimed: false, reason: "confirmation_required" }, { status: 400 });
+export async function POST(request: Request) {
+  const body = await request.json().catch(() => ({})) as { confirm?: boolean };
+  if (body.confirm !== true) return NextResponse.json({ claimed: false, reason: "confirmation_required" }, { status: 400 });
   const supabase = await createClient();
   const admin = createAdminClient();
   const { data: { user } } = await supabase.auth.getUser();
