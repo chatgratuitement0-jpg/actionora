@@ -7,7 +7,7 @@ export default async function NewActionPage({searchParams}:{searchParams:Promise
  const {data:clients}=await s.from("clients").select("id,name").eq("workspace_id",m.workspace_id).order("name");
  const selectedClient=clientId&&clients?.some(c=>c.id===clientId)?clientId:"";
  async function createAction(formData:FormData){ "use server";
-   const sup=await createClient(); const {data:{claims:c}}=await sup.auth.getClaims(); if(!c?.sub) redirect("/auth");
+   const sup=await createClient(); const { data: claimsData } = await sup.auth.getClaims(); const c = claimsData?.claims; if(!c?.sub) redirect("/auth");
    const {data:member}=await sup.from("workspace_members").select("workspace_id").eq("user_id",c.sub).limit(1).maybeSingle(); if(!member) redirect("/onboarding");
    const cid=String(formData.get("client_id")||""); const title=String(formData.get("title")||"").trim(); if(!cid||!title) return;
    const {data:client}=await sup.from("clients").select("id").eq("id",cid).eq("workspace_id",member.workspace_id).maybeSingle(); if(!client)return;
