@@ -21,7 +21,7 @@ export default async function ActionsPage() {
         <h1 className="mt-2 text-4xl font-semibold text-[#0b1736]">Know what needs to happen next.</h1>
         <div className="mt-8 grid gap-3">
           {actions?.length ? actions.map((a: any) => (
-            <div key={a.id} className="rounded-2xl border bg-white p-5">
+            <a href={"/app/actions/"+a.id} key={a.id} className="block rounded-2xl border bg-white p-5 transition hover:-translate-y-0.5 hover:shadow-sm">
               <div className="flex justify-between gap-4">
                 <div>
                   <p className="font-semibold text-[#0b1736]">{a.title}</p>
