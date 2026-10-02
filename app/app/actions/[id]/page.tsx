@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { AIInsight } from "@/components/ai/ai-insight";
 
 export default async function ActionDetail({params}:{params:Promise<{id:string}>}){
- const {id}=await params; const s=await createClient(); const {data:{claims}}=await s.auth.getClaims(); if(!claims?.sub)redirect("/auth");
+ const {id}=await params; const s=await createClient(); const { data: claimsData } = await s.auth.getClaims(); const claims = claimsData?.claims; if(!claims?.sub)redirect("/auth");
  const {data:m}=await s.from("workspace_members").select("workspace_id").eq("user_id",claims.sub).limit(1).maybeSingle(); if(!m)redirect("/onboarding");
  const {data:action}=await s.from("actions").select("id,title,description,reason,priority,status,due_at,completed_at,client_id,clients(name,email)").eq("id",id).eq("workspace_id",m.workspace_id).maybeSingle(); if(!action)redirect("/app/actions");
  const {data:invoices}=await s.from("invoices").select("id,invoice_number,amount,currency,due_date,status,payments(amount)").eq("client_id",action.client_id).eq("workspace_id",m.workspace_id).order("due_date",{ascending:false}).limit(10);
