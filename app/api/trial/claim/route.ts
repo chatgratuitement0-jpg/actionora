@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export async function POST() {
   const supabase = await createClient();
+  const admin = createAdminClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Authentication required." }, { status: 401 });
 
@@ -10,7 +12,7 @@ export async function POST() {
   const trialToken = await token;
   if (!trialToken) return NextResponse.json({ claimed: false });
 
-  const { data: session } = await supabase
+  const { data: session } = await admin
     .from("trial_sessions")
     .select("id, expires_at")
     .eq("session_token", trialToken)
@@ -19,7 +21,7 @@ export async function POST() {
 
   if (!session) return NextResponse.json({ claimed: false });
 
-  const { data: analysis } = await supabase
+  const { data: analysis } = await admin
     .from("trial_analyses")
     .select("input_data,result_data")
     .eq("trial_session_id", session.id)
