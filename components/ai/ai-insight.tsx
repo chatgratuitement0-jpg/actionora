@@ -13,6 +13,8 @@ export function AIInsight({ clientId }: { clientId: string }) {
   const [loading, setLoading] = useState(false);
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [creating, setCreating] = useState(false);
+  const [created, setCreated] = useState(false);
 
   async function analyze() {
     setLoading(true);
@@ -32,7 +34,7 @@ export function AIInsight({ clientId }: { clientId: string }) {
     setLoading(false);
   }
 
-  return (
+  async function createAction() {\n    if (!analysis) return;\n    setCreating(true);\n    setError(null);\n    const response = await fetch("/api/actions/from-ai", {\n      method: "POST",\n      headers: { "Content-Type": "application/json" },\n      body: JSON.stringify({ client_id: clientId, recommendation: analysis.recommendation, reason: analysis.reason, priority: analysis.priority }),\n    });\n    const data = await response.json().catch(() => ({}));\n    if (!response.ok) setError(data.error ?? "We could not create the action.");\n    else setCreated(true);\n    setCreating(false);\n  }\n\n  return (
     <section className="rounded-2xl border border-blue-100 bg-blue-50/60 p-5">
       <div className="flex items-center justify-between gap-4">
         <div>
