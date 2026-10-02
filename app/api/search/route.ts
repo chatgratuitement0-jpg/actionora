@@ -18,7 +18,7 @@ export async function GET(request: Request) {
 
   const [clients, actions, invoices] = await Promise.all([
     s.from("clients").select("id,name,company_name").eq("workspace_id", membership.workspace_id)
-      .or("name.ilike." + pattern + ",company_name.ilike." + pattern).limit(8),
+       .or("name.ilike." + pattern + ",company_name.ilike." + pattern + ",email.ilike." + pattern).limit(8),
     s.from("actions").select("id,title,status,priority,client_id,clients(name)")
       .eq("workspace_id", membership.workspace_id).ilike("title", pattern).limit(8),
     s.from("invoices").select("id,invoice_number,status,amount,currency,client_id,clients(name)")
