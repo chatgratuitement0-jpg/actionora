@@ -3,14 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-type Notification = { id: string; title: string; message: string; created_at: string; read_at: string | null; type?: string };
-
-function target(item: Notification) {
-  if (item.type === "action_due") return "/app/actions";
-  if (item.type === "payment_overdue") return "/app/payments";
-  if (item.type === "payment_received") return "/app/payments";
-  return "/app/today";
-}
+type Notification = { id: string; title: string; message: string; created_at: string; read_at: string | null; metadata?: { href?: string } };
 
 export function NotificationCenter() {
   const [items, setItems] = useState<Notification[]>([]);
@@ -22,6 +15,11 @@ export function NotificationCenter() {
     if (response.ok) setItems(await response.json());
   }
 
+  async function refresh() {
+    await fetch("/api/notifications/generate", { method: "POST" });
+    await load();
+  }
+
   async function markRead(id: string) {
     await fetch("/api/notifications/read", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
     setItems((current) => current.map((item) => item.id === id ? { ...item, read_at: new Date().toISOString() } : item));
@@ -29,11 +27,11 @@ export function NotificationCenter() {
 
   async function openNotification(item: Notification) {
     await markRead(item.id);
-    router.push(target(item));
+    router.push(item.metadata?.href || "/app/today");
     setOpen(false);
   }
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { refresh(); }, []);
 
   const unread = items.filter((item) => !item.read_at).length;
 
@@ -44,7 +42,8 @@ export function NotificationCenter() {
     {open && <div className="absolute right-0 z-50 mt-2 w-80 rounded-2xl border bg-white p-2 shadow-xl">
       <p className="px-3 py-2 text-sm font-semibold">Your notifications</p>
       {items.length ? items.map((item) => <button key={item.id} onClick={() => openNotification(item)} className="block w-full rounded-xl p-3 text-left hover:bg-slate-50">
-        <p className="text-sm font-semibold">{item.title}</p><p className="mt-1 text-xs text-slate-500">{item.message}</p>
+        <p className="text-sm font-semibold">{item.title}</p>
+        <p className="mt-1 text-xs text-slate-500">{item.message}</p>
       </button>) : <p className="p-3 text-xs text-slate-500">You are all caught up.</p>}
     </div>}
   </div>;
