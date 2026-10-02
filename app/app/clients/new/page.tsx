@@ -6,7 +6,7 @@ export default async function NewClientPage(){
  const {data:m}=await s.from("workspace_members").select("workspace_id").eq("user_id",claims.sub).limit(1).maybeSingle(); if(!m) redirect("/onboarding");
  async function createClientAction(formData:FormData){
    "use server";
-   const sup=await createClient(); const {data:{claims:c}}=await sup.auth.getClaims(); if(!c?.sub) redirect("/auth");
+   const sup=await createClient(); const { data: claimsData } = await sup.auth.getClaims(); const c = claimsData?.claims; if(!c?.sub) redirect("/auth");
    const {data:member}=await sup.from("workspace_members").select("workspace_id").eq("user_id",c.sub).limit(1).maybeSingle(); if(!member) redirect("/onboarding");
    const name=String(formData.get("name")||"").trim(); if(!name) return;
    await sup.from("clients").insert({workspace_id:member.workspace_id,name,company_name:String(formData.get("company_name")||"").trim()||null,email:String(formData.get("email")||"").trim()||null,phone:String(formData.get("phone")||"").trim()||null,notes:String(formData.get("notes")||"").trim()||null,status:"on_track"});
