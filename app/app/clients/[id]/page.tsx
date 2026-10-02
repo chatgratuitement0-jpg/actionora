@@ -5,7 +5,7 @@ import { AIInsight } from "@/components/ai/ai-insight";
 export default async function ClientPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const s = await createClient();
-  const { data: { claims } } = await s.auth.getClaims();
+  const { data: claimsData } = await s.auth.getClaims(); const claims = claimsData?.claims;
   if (!claims?.sub) redirect("/auth");
 
   const { data: m } = await s.from("workspace_members").select("workspace_id").eq("user_id", claims.sub).limit(1).maybeSingle();
