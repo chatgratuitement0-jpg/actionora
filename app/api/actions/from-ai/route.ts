@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function POST(request: Request) {
   const supabase = await createClient();
-  const { data: { claims } } = await supabase.auth.getClaims();
+  const { data: claimsData } = await supabase.auth.getClaims(); const claims = claimsData?.claims;
   if (!claims?.sub) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const body = await request.json().catch(() => null) as { analysis_id?: string; confirm?: boolean } | null;
   if (!body?.analysis_id || body.confirm !== true) return NextResponse.json({ error: "analysis_id and confirmation are required" }, { status: 400 });
