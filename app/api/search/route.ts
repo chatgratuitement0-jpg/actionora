@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function GET(request: Request) {
   const s = await createClient();
-  const { data: { claims } } = await s.auth.getClaims();
+  const { data: claimsData } = await s.auth.getClaims(); const claims = claimsData?.claims;
   if (!claims?.sub) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { data: membership } = await s.from("workspace_members")
