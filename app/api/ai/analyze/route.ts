@@ -5,7 +5,7 @@ import { analyzeWithProvider } from "@/lib/ai/provider";
 
 export async function POST(request: Request) {
   const supabase = await createClient();
-  const { data: { claims } } = await supabase.auth.getClaims();
+  const { data: claimsData } = await supabase.auth.getClaims(); const claims = claimsData?.claims;
   if (!claims?.sub) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await request.json().catch(() => null) as { client_id?: string; action_id?: string } | null;
