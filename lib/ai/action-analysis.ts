@@ -1,4 +1,9 @@
-import type { ActionAnalysis } from "@/lib/ai/action-analysis";
+export type ActionAnalysis = {
+  priority: "low" | "medium" | "high";
+  reason: string;
+  recommendation: string;
+  suggested_message: string;
+};
 
 export type ActionContext = {
   client: string;
@@ -44,9 +49,7 @@ export function buildActionContext(input: {
 }): ActionContext {
   return {
     client: input.clientName,
-    invoice: input.invoiceAmount != null
-      ? { amount: input.invoiceAmount, currency: input.currency ?? "" }
-      : null,
+    invoice: input.invoiceAmount != null ? { amount: input.invoiceAmount, currency: input.currency ?? "" } : null,
     due_date: input.dueDate ?? null,
     last_activity: input.lastActivity ?? null,
     notes: input.notes ?? null,
