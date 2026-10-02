@@ -1,0 +1,3 @@
+import type { Metadata } from "next";
+export const metadata: Metadata = { title: "Case Studies", description: "Real Actionora customer stories will be published with permission.", alternates: { canonical: "/case-studies" } };
+export default function CaseStudies(){return <main className="min-h-screen bg-[#f8fafc] px-6 py-16"><div className="mx-auto max-w-3xl rounded-3xl border bg-white p-8"><p className="font-semibold text-blue-600">Case studies</p><h1 className="mt-2 text-4xl font-semibold text-[#0b1736]">Real stories only.</h1><p className="mt-4 text-slate-600">Actionora will publish customer case studies only when there is a real customer and permission to share the story. No fabricated results.</p></div></main>}
