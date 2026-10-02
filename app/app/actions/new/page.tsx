@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function NewActionPage({searchParams}:{searchParams:Promise<{client?:string}>}){
- const {client:clientId}=await searchParams; const s=await createClient(); const {data:{claims}}=await s.auth.getClaims(); if(!claims?.sub) redirect("/auth");
+ const {client:clientId}=await searchParams; const s=await createClient(); const { data: claimsData } = await s.auth.getClaims(); const claims = claimsData?.claims; if(!claims?.sub) redirect("/auth");
  const {data:m}=await s.from("workspace_members").select("workspace_id").eq("user_id",claims.sub).limit(1).maybeSingle(); if(!m) redirect("/onboarding");
  const {data:clients}=await s.from("clients").select("id,name").eq("workspace_id",m.workspace_id).order("name");
  const selectedClient=clientId&&clients?.some(c=>c.id===clientId)?clientId:"";
