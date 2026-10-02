@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function InvoiceDetail({params}:{params:Promise<{id:string}>}){
- const {id}=await params; const s=await createClient(); const {data:{claims}}=await s.auth.getClaims(); if(!claims?.sub)redirect("/auth");
+ const {id}=await params; const s=await createClient(); const { data: claimsData } = await s.auth.getClaims(); const claims = claimsData?.claims; if(!claims?.sub)redirect("/auth");
  const {data:m}=await s.from("workspace_members").select("workspace_id").eq("user_id",claims.sub).limit(1).maybeSingle(); if(!m)redirect("/onboarding");
  const {data:i}=await s.from("invoices").select("id,invoice_number,amount,currency,issue_date,due_date,status,description,notes,client_id,clients(name,email),payments(id,amount,payment_date,method,notes)").eq("id",id).eq("workspace_id",m.workspace_id).maybeSingle(); if(!i)redirect("/app/payments");
  const paid=(i.payments||[]).reduce((x:number,p:any)=>x+Number(p.amount),0); const remaining=Math.max(0,Number(i.amount)-paid);
