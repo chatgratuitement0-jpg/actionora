@@ -12,7 +12,7 @@ export async function GET(request: Request) {
   const { error } = await supabase.auth.exchangeCodeForSession(code);
   if (error) return NextResponse.redirect(new URL("/auth?error=callback", url.origin));
 
-  const { data: { claims } } = await supabase.auth.getClaims();
+  const { data: claimsData } = await supabase.auth.getClaims(); const claims = claimsData?.claims;
   if (!claims?.sub) return NextResponse.redirect(new URL("/auth?error=session", url.origin));
 
   const { data: membership } = await supabase
