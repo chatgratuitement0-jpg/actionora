@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 function dueNow(v:string|null){return !!v&&new Date(v)<=new Date();}
 
 export default async function TodayPage(){
- const s=await createClient(); const {data:{claims}}=await s.auth.getClaims(); if(!claims?.sub)redirect("/auth");
+ const s=await createClient(); const { data: claimsData } = await s.auth.getClaims(); const claims = claimsData?.claims; if(!claims?.sub)redirect("/auth");
  const {data:m}=await s.from("workspace_members").select("workspace_id").eq("user_id",claims.sub).limit(1).maybeSingle(); if(!m)redirect("/onboarding");
  const now=new Date().toISOString();
 
