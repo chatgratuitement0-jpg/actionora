@@ -41,8 +41,8 @@ export async function POST() {
         .from("notifications")
         .select("id")
         .eq("user_id", userId)
-        .eq("type", "action_due")
-        .eq("message", "ACTION:" + action.id)
+         .eq("type", "action_due")
+        .eq("metadata->>entity_id", action.id)
         .limit(1)
         .maybeSingle();
 
@@ -74,8 +74,8 @@ export async function POST() {
         .from("notifications")
         .select("id")
         .eq("user_id", userId)
-        .eq("type", "payment_overdue")
-        .eq("message", "INVOICE:" + invoice.id)
+         .eq("type", "payment_overdue")
+        .eq("metadata->>entity_id", invoice.id)
         .limit(1)
         .maybeSingle();
 
