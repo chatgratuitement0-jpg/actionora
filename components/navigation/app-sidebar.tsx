@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const items=[["/app/today","Today"],["/app/clients","Clients"],["/app/actions","Actions"],["/app/payments","Payments"],["/app/activity","Activity"],["/app/analytics","Analytics"],["/app/settings","Settings"]];
+const items=[["/app/today","Today"],["/app/clients","Clients"],["/app/actions","Actions"],["/app/payments","Payments"],["/app/documents","Documents"],["/app/activity","Activity"],["/app/analytics","Analytics"],["/app/settings","Settings"]];
 
 function NavLink({href,label}:{href:string;label:string}){
  const pathname=usePathname(); const active=pathname===href||pathname.startsWith(href+"/");
