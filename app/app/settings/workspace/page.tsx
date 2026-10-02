@@ -4,7 +4,7 @@ import WorkspaceForm from "@/components/settings/workspace-form";
 
 export default async function WorkspaceSettings(){
  const s=await createClient();
- const {data:{claims}}=await s.auth.getClaims();
+ const { data: claimsData } = await s.auth.getClaims(); const claims = claimsData?.claims;
  if(!claims?.sub) redirect("/auth");
  const {data:m}=await s.from("workspace_members").select("workspace_id,role").eq("user_id",claims.sub).limit(1).maybeSingle();
  if(!m) redirect("/onboarding");
