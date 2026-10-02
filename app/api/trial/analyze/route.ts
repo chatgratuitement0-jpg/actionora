@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { cookies } from "next/headers";
 
 function resultFor(body: Record<string,string>) {
   const overdue = !!body.due && !Number.isNaN(Date.parse(body.due)) && new Date(body.due) < new Date();
@@ -12,13 +13,31 @@ export async function POST(request: Request) {
   const body = await request.json().catch(() => null) as Record<string,string> | null;
   if (!body?.client || !body?.waiting) return NextResponse.json({ error: "Client and situation are required." }, { status: 400 });
   const supabase = createAdminClient();
-  const token = crypto.randomUUID();
-  const { data: session, error: sessionError } = await supabase.from("trial_sessions").insert({ session_token: token, expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() }).select("id,session_token").single();
-  if (sessionError || !session) return NextResponse.json({ error: "Trial session could not be created." }, { status: 500 });
+  const cookieStore = await cookies();
+  const existingToken = cookieStore.get("actionora_trial")?.value;
+  let session: { id: string; session_token: string } | null = null;
+
+  if (existingToken) {
+    const { data: existing } = await supabase.from("trial_sessions").select("id,session_token").eq("session_token", existingToken).gt("expires_at", new Date().toISOString()).maybeSingle();
+    if (existing) {
+      const since = new Date();
+      since.setHours(0, 0, 0, 0);
+      const { count } = await supabase.from("trial_analyses").select("id", { count: "exact", head: true }).eq("trial_session_id", existing.id).gte("created_at", since.toISOString());
+      if ((count ?? 0) >= 3) return NextResponse.json({ error: "You have reached the 3 free analyses for today. Create an account to continue." }, { status: 429 });
+      session = existing;
+    }
+  }
+
+  if (!session) {
+    const token = crypto.randomUUID();
+    const { data: created, error: sessionError } = await supabase.from("trial_sessions").insert({ session_token: token, expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() }).select("id,session_token").single();
+    if (sessionError || !created) return NextResponse.json({ error: "Trial session could not be created." }, { status: 500 });
+    session = created;
+  }
   const result = resultFor(body);
   const { error: analysisError } = await supabase.from("trial_analyses").insert({ trial_session_id: session.id, input_data: body, result_data: result });
   if (analysisError) return NextResponse.json({ error: "Trial analysis could not be saved." }, { status: 500 });
-  const response = NextResponse.json({ ...result, trial_token: session.session_token });
+  const response = NextResponse.json(result);
   response.cookies.set("actionora_trial", session.session_token, { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", maxAge: 60 * 60 * 24, path: "/" });
   return response;
 }
