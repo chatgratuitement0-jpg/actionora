@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 
 export default async function ClientsPage({ searchParams }: { searchParams: Promise<{ q?: string; status?: string; page?: string }> }) {
   const params = await searchParams; const q=(params.q||"").trim(); const status=params.status||"all"; const page=Math.max(1,Number(params.page)||1); const pageSize=25;
-  const s=await createClient(); const {data:{claims}}=await s.auth.getClaims(); if(!claims?.sub)redirect("/auth");
+  const s=await createClient(); const { data: claimsData } = await s.auth.getClaims(); const claims = claimsData?.claims; if(!claims?.sub)redirect("/auth");
   const {data:m}=await s.from("workspace_members").select("workspace_id").eq("user_id",claims.sub).limit(1).maybeSingle(); if(!m)redirect("/onboarding");
   let query=s.from("clients").select("id,name,company_name,status,email,created_at",{count:"exact"}).eq("workspace_id",m.workspace_id).order("created_at",{ascending:false});
   if(q)query=query.or(`name.ilike.%${q}%,company_name.ilike.%${q}%,email.ilike.%${q}%`); if(status!=="all")query=query.eq("status",status);
