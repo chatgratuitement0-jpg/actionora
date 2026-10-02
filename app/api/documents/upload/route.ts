@@ -10,7 +10,7 @@ const MAX_BYTES = 10 * 1024 * 1024;
 
 export async function POST(request: Request) {
   const supabase = await createClient();
-  const { data: { claims } } = await supabase.auth.getClaims();
+  const { data: claimsData } = await supabase.auth.getClaims(); const claims = claimsData?.claims;
   if (!claims?.sub) return NextResponse.json({ error: "Authentication required." }, { status: 401 });
 
   const { data: member } = await supabase.from("workspace_members").select("workspace_id").eq("user_id", claims.sub).limit(1).maybeSingle();
