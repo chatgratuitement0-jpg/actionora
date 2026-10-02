@@ -4,7 +4,7 @@ import OnboardingForm from "@/components/onboarding/onboarding-form";
 
 export default async function OnboardingPage(){
   const supabase=await createClient();
-  const {data:{claims}}=await supabase.auth.getClaims();
+  const { data: claimsData } = await supabase.auth.getClaims(); const claims = claimsData?.claims;
   if(!claims?.sub) redirect("/auth");
 
   const {data:membership}=await supabase.from("workspace_members").select("workspace_id").eq("user_id",claims.sub).limit(1).maybeSingle();
