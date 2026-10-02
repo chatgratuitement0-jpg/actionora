@@ -12,7 +12,7 @@ export default async function NewInvoicePage() {
   async function createInvoice(formData: FormData) {
     "use server";
     const sup = await createClient();
-    const { data: { claims: c } } = await sup.auth.getClaims();
+    const { data: claimsData } = await sup.auth.getClaims(); const c = claimsData?.claims;
     if (!c?.sub) redirect("/auth");
     const { data: member } = await sup.from("workspace_members").select("workspace_id").eq("user_id", c.sub).limit(1).maybeSingle();
     if (!member) redirect("/onboarding");
