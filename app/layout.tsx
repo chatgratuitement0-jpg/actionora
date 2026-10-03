@@ -63,6 +63,13 @@ export default function RootLayout({
     logo: `${siteUrl}/icon.svg`,
   };
 
+  const website = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: siteName,
+    url: siteUrl,
+  };
+
   const software = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -80,7 +87,7 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify([organization, software]),
+            __html: JSON.stringify([organization, website, software]),
           }}
         />
       </body>
