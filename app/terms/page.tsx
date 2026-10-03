@@ -1,2 +1,9 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Actionora terms of service",
+  description: "Review the terms governing use of Actionora, accounts, AI assistance and future paid plans.",
+  alternates: { canonical: "/terms" },
+};
 export default function Terms(){return <main className="mx-auto max-w-3xl px-6 py-16"><h1 className="text-4xl font-semibold text-[#0b1736]">Terms of Service</h1><p className="mt-4 text-slate-500">Last updated: October 2, 2026</p><div className="prose prose-slate mt-10 max-w-none"><h2>Using Actionora</h2><p>You may use Actionora only for lawful business and personal productivity purposes and must provide information you are authorized to use.</p><h2>Your account</h2><p>You are responsible for protecting access to your account and for activity performed through your workspace.</p><h2>AI features</h2><p>AI output is assistance, not a guarantee of accuracy. Review messages, recommendations and summaries before relying on them or sending them.</p><h2>Payments</h2><p>Paid plans, when enabled, will be governed by the applicable plan terms and billing provider terms presented at checkout.</p><h2>Acceptable use</h2><p>Do not use the service to violate law, abuse other people, attempt unauthorized access, or interfere with the service.</p><h2>Changes</h2><p>Terms may be updated as the service evolves. Material changes will be communicated through appropriate channels.</p></div></main>
 }
