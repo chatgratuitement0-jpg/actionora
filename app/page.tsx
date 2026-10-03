@@ -1,3 +1,12 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Client follow-ups, payments and next actions",
+  description:
+    "Stay ahead of client follow-ups, overdue payments and pending work. Actionora brings context together and helps you decide what needs your attention.",
+  alternates: { canonical: "/" },
+};
+
 const actions = [
   { client: "Sarah", detail: "€850 overdue · 8 days", action: "Follow up today", tone: "urgent" },
   { client: "Ahmed Studio", detail: "Proposal · waiting 5 days", action: "Check in tomorrow", tone: "attention" },
@@ -5,8 +14,20 @@ const actions = [
 ];
 
 export default function Home() {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://actionora.com";
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "Actionora — Client follow-ups, payments and next actions",
+    url: siteUrl,
+    description:
+      "Stay ahead of client follow-ups, overdue payments and pending work with Actionora.",
+    isPartOf: { "@type": "WebSite", name: "Actionora", url: siteUrl },
+  };
+
   return (
     <main className="min-h-screen overflow-hidden">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 lg:px-8">
         <a href="/" className="flex items-center gap-2 text-lg font-bold tracking-tight text-[#0b1736]">
           <span className="grid size-9 place-items-center rounded-xl bg-[#0b1736] text-sm text-white">A</span>
