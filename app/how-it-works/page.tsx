@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "How Actionora works",
+  description: "See how Actionora turns scattered client context into one clear next action.",
+  alternates: { canonical: "/how-it-works" },
+};
 import Link from "next/link";
 
 const steps=[["01","Capture","Add a client, invoice, action or activity."],["02","Understand","Actionora keeps the relevant context together."],["03","Decide","Review why something needs attention and the suggested next step."],["04","Act","Edit, schedule or complete the action yourself."]];
