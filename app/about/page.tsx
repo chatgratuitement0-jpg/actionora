@@ -1,2 +1,9 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Actionora",
+  description: "Learn why Actionora is being built around one question: what needs your attention now?",
+  alternates: { canonical: "/about" },
+};
 import Link from "next/link";
 export default function AboutPage(){return <main className="min-h-screen bg-white px-6 py-16"><div className="mx-auto max-w-4xl"><Link href="/" className="font-bold text-[#0b1736]">Actionora</Link><div className="mt-20"><p className="text-sm font-semibold text-blue-600">About Actionora</p><h1 className="mt-3 text-5xl font-semibold tracking-tight text-[#0b1736]">Built around a simple question: what needs your attention now?</h1><p className="mt-6 text-lg leading-8 text-slate-600">Actionora is being built as a focused client-operations workspace for people who need context and clear next actions without turning their workflow into another complicated dashboard.</p></div></div></main>}
