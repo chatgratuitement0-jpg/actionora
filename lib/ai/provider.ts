@@ -25,8 +25,8 @@ function extractProviderPayload(data: unknown): unknown {
   if (!data || typeof data !== "object") return data;
   const root = data as Record<string, unknown>;
   if (root.analysis) return root.analysis;
+  if (Array.isArray(root.output)) return root.output[0] ?? null;
   if (root.output) return root.output;
-  if (Array.isArray(root.output) && root.output[0]) return root.output[0];
   if (root.result) return root.result;
   return data;
 }
