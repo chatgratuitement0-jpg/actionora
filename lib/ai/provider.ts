@@ -88,7 +88,7 @@ export async function analyzeWithProvider(input: ActionAIInput): Promise<ActionA
   const endpoint =
     process.env.AI_PROVIDER_URL ??
     "https://generativelanguage.googleapis.com/v1beta/interactions";
-  const model = process.env.AI_MODEL ?? "gemini-3.6-flash";
+  const model = process.env.AI_MODEL ?? "gemini-3.8-flash";
 
   if (!key) return fallback(input);
 
@@ -105,6 +105,7 @@ export async function analyzeWithProvider(input: ActionAIInput): Promise<ActionA
       body: JSON.stringify({
         model,
         input: buildGeminiPrompt(input),
+        store: false,
         response_format: {
           type: "text",
           mime_type: "application/json",
