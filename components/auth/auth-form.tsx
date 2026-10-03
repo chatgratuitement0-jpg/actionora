@@ -2,9 +2,9 @@
 import { FormEvent, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-export default function AuthForm() {
+export default function AuthForm({ initialMode = "signup" }: { initialMode?: "signin" | "signup" }) {
   const supabase = createClient();
-  const [mode,setMode] = useState<"signin"|"signup">(() => new URLSearchParams(window.location.search).get("mode") === "signin" ? "signin" : "signup");
+  const [mode,setMode] = useState<"signin"|"signup">(initialMode);
   const [email,setEmail] = useState(""); const [password,setPassword] = useState(""); const [name,setName] = useState("");
   const [message,setMessage] = useState(""); const [busy,setBusy] = useState(false); const [terms,setTerms] = useState(false);
   async function submit(e:FormEvent){
