@@ -1,2 +1,26 @@
-import Link from "next/link"; import { getPlatformAdminContext } from "@/lib/admin/platform-context";
-export default async function AdminSystem(){const {admin}=await getPlatformAdminContext();const {data}=await admin.from("audit_logs").select("id,action,target_type,target_id,created_at").order("created_at",{ascending:false}).limit(100);return <main className="px-6 py-10"><div className="mx-auto max-w-7xl"><Link href="/admin" className="text-sm font-semibold text-blue-600">← Admin</Link><h1 className="mt-4 text-3xl font-semibold text-[#0b1736]">System activity</h1><p className="mt-2 text-sm text-slate-500">Operational events currently available through the audit trail.</p><div className="mt-6 space-y-2">{(data??[]).map(e=><div key={e.id} className="rounded-xl border bg-white p-4 text-sm"><span className="font-semibold">{e.action}</span><span className="ml-3 text-slate-500">{e.target_type}:{e.target_id||"—"}</span><span className="float-right text-xs text-slate-400">{new Date(e.created_at).toLocaleString()}</span></div>)}</div></div></main>
+import Link from "next/link";
+import { getPlatformAdminContext } from "@/lib/admin/platform-context";
+
+export default async function AdminSystem() {
+  const { admin } = await getPlatformAdminContext();
+  const { data } = await admin.from("audit_logs").select("id,action,target_type,target_id,created_at").order("created_at", { ascending: false }).limit(100);
+
+  return (
+    <main className="px-6 py-10">
+      <div className="mx-auto max-w-7xl">
+        <Link href="/admin" className="text-sm font-semibold text-blue-600">← Admin</Link>
+        <h1 className="mt-4 text-3xl font-semibold text-[#0b1736]">System activity</h1>
+        <p className="mt-2 text-sm text-slate-500">Operational events currently available through the audit trail.</p>
+        <div className="mt-6 space-y-2">
+          {(data ?? []).map((event) => (
+            <div key={event.id} className="rounded-xl border bg-white p-4 text-sm">
+              <span className="font-semibold">{event.action}</span>
+              <span className="ml-3 text-slate-500">{event.target_type}:{event.target_id || "—"}</span>
+              <span className="float-right text-xs text-slate-400">{new Date(event.created_at).toLocaleString()}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </main>
+  );
+}
