@@ -15,11 +15,6 @@ export function NotificationCenter() {
     if (response.ok) setItems(await response.json());
   }
 
-  async function refresh() {
-    await fetch("/api/notifications/generate", { method: "POST" });
-    await load();
-  }
-
   async function markRead(id: string) {
     await fetch("/api/notifications/read", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
     setItems((current) => current.map((item) => item.id === id ? { ...item, read_at: new Date().toISOString() } : item));
@@ -31,7 +26,7 @@ export function NotificationCenter() {
     setOpen(false);
   }
 
-  useEffect(() => { refresh(); }, []);
+  useEffect(() => { void load(); }, []);
 
   const unread = items.filter((item) => !item.read_at).length;
 
