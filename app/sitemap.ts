@@ -7,7 +7,7 @@ const routes = [
   "/resources", "/tools",
   "/tools/invoice-follow-up-generator", "/tools/payment-due-calculator",
   "/tools/client-follow-up-generator", "/tools/late-payment-calculator",
-  "/tools/follow-up-templates", "/templates", "/guides", "/faq", "/case-studies",
+  "/tools/follow-up-templates", "/templates", "/guides", "/guides/how-to-follow-up-overdue-invoice", "/guides/client-stops-responding", "/guides/task-list-vs-client-context", "/guides/simple-client-follow-up-system", "/faq", "/case-studies",
   "/try", "/privacy", "/terms", "/cookies", "/acceptable-use",
 ];
 
