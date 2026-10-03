@@ -4,11 +4,14 @@ import { buildActionContext, validateActionAnalysis } from "@/lib/ai/action-anal
 import { analyzeWithProvider } from "@/lib/ai/provider";
 
 export async function POST(request: Request) {
+  const startedAt = Date.now();
+  const requestId = crypto.randomUUID();
   const supabase = await createClient();
   const { data: claimsData } = await supabase.auth.getClaims(); const claims = claimsData?.claims;
   if (!claims?.sub) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await request.json().catch(() => null) as { client_id?: string; action_id?: string } | null;
+  if (Date.now() - startedAt > 20_000) return NextResponse.json({ error: "Request timed out. No changes were made.", request_id: requestId }, { status: 504 });
   if (!body?.client_id) return NextResponse.json({ error: "client_id is required" }, { status: 400 });
 
   const { data: member } = await supabase
@@ -100,5 +103,5 @@ export async function POST(request: Request) {
     });
   }
 
-  return NextResponse.json({ analysis: validated, analysis_id: saved.id });
+  return NextResponse.json({ analysis: validated, analysis_id: saved.id, request_id: requestId });
 }
