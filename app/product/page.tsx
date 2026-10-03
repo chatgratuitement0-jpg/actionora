@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Client operations software for clear next actions",
+  description: "See how Actionora brings client context, payments, follow-ups and activity into one action-focused workspace.",
+  alternates: { canonical: "/product" },
+};
 import Link from "next/link";
 
 export default function ProductPage() {
