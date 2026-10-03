@@ -2,14 +2,14 @@ name: Scheduled maintenance
 
 on:
   schedule:
-    - cron: "15 2 * * *"
+    - cron: "*/15 * * * *"
   workflow_dispatch:
 
 jobs:
   refresh-overdue-invoices:
     runs-on: ubuntu-latest
     steps:
-      - name: Refresh overdue invoices
+      - name: Refresh overdue invoices and notifications
         env:
           SUPABASE_FUNCTION_URL: ${{ secrets.SUPABASE_FUNCTION_URL }}
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
