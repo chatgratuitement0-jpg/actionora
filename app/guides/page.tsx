@@ -1,9 +1,36 @@
 import type { Metadata } from "next";
-export const metadata: Metadata = { title: "Guides", description: "Practical guides for client follow-ups, payments and staying on top of next actions.", alternates: { canonical: "/guides" } };
-const guides=[
-["How to follow up on an overdue invoice without damaging the relationship","A practical framework: confirm the facts, state the outstanding item clearly, ask for a concrete update, and keep the message easy to answer."],
-["What to do when a client stops responding","Separate waiting from action. Check the last contact, the commitment or due date, the project impact, and the next reasonable follow-up point."],
-["Why a task list is not enough for client operations","A task tells you what to do. Context tells you why now, what happened before, and what the next action should accomplish."],
-["How to build a simple client follow-up system","Keep client context, activities, money and next actions together. Review attention items daily and avoid relying on memory alone."],
+import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Guides for client follow-ups, payments and next actions",
+  description: "Practical guides for overdue invoices, client follow-ups, client silence and building a simple next-action workflow.",
+  alternates: { canonical: "/guides" },
+};
+
+const guides = [
+  ["how-to-follow-up-overdue-invoice", "How to follow up on an overdue invoice without damaging the relationship", "A practical framework for clear, professional payment follow-ups."],
+  ["client-stops-responding", "What to do when a client stops responding", "Separate waiting from action and keep the relevant context together."],
+  ["task-list-vs-client-context", "Why a task list is not enough for client operations", "Understand the difference between a task and a context-rich next action."],
+  ["simple-client-follow-up-system", "How to build a simple client follow-up system", "A practical workflow for context, timing, actions and daily review."],
 ];
-export default function Guides(){return <main className="min-h-screen bg-[#f8fafc] px-6 py-16"><div className="mx-auto max-w-5xl"><p className="font-semibold text-blue-600">Resources</p><h1 className="mt-2 text-4xl font-semibold text-[#0b1736]">Guides for better client operations.</h1><p className="mt-4 max-w-2xl text-slate-600">Practical guidance based on common client, payment and follow-up situations.</p><div className="mt-10 grid gap-4 md:grid-cols-2">{guides.map(([title,summary])=><article key={title} className="rounded-2xl border bg-white p-6"><h2 className="font-semibold text-[#0b1736]">{title}</h2><p className="mt-3 text-sm leading-6 text-slate-600">{summary}</p><a href="/try" className="mt-4 inline-block text-sm font-semibold text-blue-700">Try the workflow →</a></article>)}</div></div></main>}
+
+export default function Guides() {
+  return (
+    <main className="min-h-screen bg-[#f8fafc] px-6 py-16">
+      <div className="mx-auto max-w-5xl">
+        <p className="font-semibold text-blue-600">Resources</p>
+        <h1 className="mt-2 text-4xl font-semibold text-[#0b1736]">Guides for better client operations.</h1>
+        <p className="mt-4 max-w-2xl text-slate-600">Practical guidance for client follow-ups, payments, waiting situations and deciding what needs attention next.</p>
+        <div className="mt-10 grid gap-4 md:grid-cols-2">
+          {guides.map(([slug, title, summary]) => (
+            <article key={slug} className="rounded-2xl border bg-white p-6">
+              <h2 className="text-xl font-semibold text-[#0b1736]"><Link href={`/guides/${slug}`} className="hover:text-blue-700">{title}</Link></h2>
+              <p className="mt-3 text-sm leading-6 text-slate-600">{summary}</p>
+              <Link href={`/guides/${slug}`} className="mt-4 inline-block text-sm font-semibold text-blue-700">Read guide →</Link>
+            </article>
+          ))}
+        </div>
+      </div>
+    </main>
+  );
+}
