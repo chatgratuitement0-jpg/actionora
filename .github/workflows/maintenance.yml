@@ -1,0 +1,19 @@
+name: Scheduled maintenance
+
+on:
+  schedule:
+    - cron: "15 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  refresh-overdue-invoices:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Refresh overdue invoices
+        env:
+          SUPABASE_FUNCTION_URL: ${{ secrets.SUPABASE_FUNCTION_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          test -n "$SUPABASE_FUNCTION_URL"
+          test -n "$CRON_SECRET"
+          curl --fail-with-body --silent --show-error             -X POST "$SUPABASE_FUNCTION_URL"             -H "x-cron-secret: $CRON_SECRET"             -H "Content-Type: application/json"
