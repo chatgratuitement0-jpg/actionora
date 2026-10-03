@@ -81,7 +81,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en">
+    <html lang="en" dir="ltr">
       <body>
         {children}
         <script
