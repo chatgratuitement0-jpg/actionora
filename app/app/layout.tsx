@@ -1,8 +1,11 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { AppSidebar, MobileNav } from "@/components/navigation/app-sidebar";
 import { NotificationCenter } from "@/components/notifications/notification-center";
 import { GlobalSearch } from "@/components/search/global-search";
+
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 export default async function AppLayout({children}:{children:React.ReactNode}) {
   const s=await createClient();
