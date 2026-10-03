@@ -1,2 +1,9 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Actionora privacy policy",
+  description: "Learn what information Actionora processes, how workspace data is protected and what account data controls are available.",
+  alternates: { canonical: "/privacy" },
+};
 export default function Privacy(){return <main className="mx-auto max-w-3xl px-6 py-16"><h1 className="text-4xl font-semibold text-[#0b1736]">Privacy Policy</h1><p className="mt-4 text-slate-500">Last updated: October 2, 2026</p><div className="prose prose-slate mt-10 max-w-none"><h2>What we collect</h2><p>Actionora may process account, workspace, client, invoice, activity, trial and technical information needed to provide the service.</p><h2>How we use information</h2><p>We use information to authenticate users, provide requested features, secure the service, improve reliability and respond to support requests.</p><h2>Workspace data</h2><p>Workspace data is intended to remain private to authorized workspace members. Access controls are enforced server-side.</p><h2>AI assistance</h2><p>AI features process only information needed for the requested assistance and should not be treated as an independent decision maker. Users remain responsible for reviewing generated suggestions.</p><h2>Your choices</h2><p>You may request access, export or deletion of your account data, subject to applicable legal requirements and service limitations.</p><h2>Contact</h2><p>Use the contact channel provided by Actionora for privacy questions or requests.</p></div></main>
 }
