@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildActionContext, validateActionAnalysis } from "@/lib/ai/action-analysis";
+import { buildActionContext, validateActionAnalysis } from "../../lib/ai/action-analysis";
 
 describe("Actionora AI analysis validation", () => {
   it("accepts a valid structured recommendation", () => {
@@ -17,19 +17,8 @@ describe("Actionora AI analysis validation", () => {
   });
 
   it("rejects unsupported priorities and empty output", () => {
-    expect(validateActionAnalysis({
-      priority: "urgent",
-      reason: "x",
-      recommendation: "y",
-      suggested_message: "z",
-    })).toBeNull();
-
-    expect(validateActionAnalysis({
-      priority: "low",
-      reason: "",
-      recommendation: "y",
-      suggested_message: "z",
-    })).toBeNull();
+    expect(validateActionAnalysis({ priority: "urgent", reason: "x", recommendation: "y", suggested_message: "z" })).toBeNull();
+    expect(validateActionAnalysis({ priority: "low", reason: "", recommendation: "y", suggested_message: "z" })).toBeNull();
   });
 
   it("rejects oversized model output", () => {
